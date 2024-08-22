@@ -12,7 +12,6 @@ def request_api_data(query_char):
 
 def get_password_leak_count(hashes,hash_to_check):
     hashes = (line.split(':')for line in hashes.text.splitlines()) 
-    # if our tail found in tails from the matched list -> return count
     for h ,count in hashes:
         if h == hash_to_check: 
             return count 
@@ -25,9 +24,9 @@ def pwned_api_check(password):
     response = request_api_data(first5_char)
     return get_password_leak_count(response,tail) 
 
-# A main function recieve args and print the result
+
 def main(args):
-    for password in args: #loop via all the passwords 
+    for password in args: 
         count = pwned_api_check(password)
         if count:
             print(f'{password} was found {count} times in pwned.... Please use another password')
@@ -35,6 +34,7 @@ def main(args):
             print(f'{password} is good')
     return 'done!'
 
-#python3 checkmypass.py[0] password[1] abcd1234[2] #all the args from 1 
-main(sys.argv[1:]) 
+#make sure it is being run if this is the main file being run
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:])) #make sure we exit the entire process and we can see "done!" now   
 
